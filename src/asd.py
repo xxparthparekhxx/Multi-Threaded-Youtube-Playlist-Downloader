@@ -15,7 +15,9 @@ ops.add_argument("--headless")
 w = webdriver.Chrome(options=ops)
 w.get(url)
 
-sleep(5)
+for i in range(10,0,-1):
+    print( f"Strting download in {i} seconds")
+    sleep(1)
 
 links = w.find_elements(By.XPATH,"// a[contains(text(),'View full playlist')]")
 titles = w.find_elements(By.ID,"video-title")
