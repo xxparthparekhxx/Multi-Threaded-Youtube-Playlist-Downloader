@@ -1,0 +1,6 @@
+# created by virtualenv automatically
+/build 
+/dist
+/lib
+/Scripts
+/main.spec
