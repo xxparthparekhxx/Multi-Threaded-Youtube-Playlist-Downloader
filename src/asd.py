@@ -4,6 +4,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from time import sleep
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.keys import Keys
+
 import sys;
 print(sys.executable); print(sys.argv)
 artist_name = input("Enter the artist name > ");
@@ -14,6 +16,12 @@ ops.add_argument("--headless")
 
 w = webdriver.Chrome(options=ops)
 w.get(url)
+
+for i in range(5):
+    height = w.execute_script("return document.body.scrollHeight")
+    w.find_element(By.TAG_NAME,'body').send_keys(Keys.END)
+    sleep(1)
+    
 
 for i in range(10,0,-1):
     print( f"Strting download in {i} seconds")
@@ -26,7 +34,7 @@ Titles = []
 Links = []
 
 for ele in titles:
-    title =  ele.text 
+    title = ele.get_property("title")
     print(title)
     Titles.append(title)
 for ele in links:
@@ -47,7 +55,7 @@ except:
 
 
 def download(url,title):        
-    os.system(f'cd ./"{title}" && youtube-dl -u xx.storageunt1@gmail.com -p Parthparekh007_!  --xattrs  --embed-thumbnail   --add-metadata   --ignore-errors --format bestaudio --extract-audio --audio-format mp3 --audio-quality 320K --output "%(title)s.%(ext)s" --yes-playlist {url}')
+    os.system(f'cd ./"{title}" && youtube-dl --xattrs  --embed-thumbnail   --add-metadata   --ignore-errors --format bestaudio --extract-audio --audio-format mp3 --audio-quality 320K --output "%(title)s.%(ext)s" --yes-playlist {url}')
 
 threads = [];
 
@@ -57,8 +65,6 @@ if (len(Titles) == len(Links)):
             os.mkdir(Titles[i])
         except:
             pass
-
-    for i in range(len(Titles)):
         threads.append(Thread(target=download,args=(Links[i],Titles[i]),name=Titles[i]))
     
     for thread in threads:
